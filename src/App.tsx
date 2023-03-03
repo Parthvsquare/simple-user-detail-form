@@ -1,11 +1,9 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { Button, createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import UserDetailsForm from "./UserFormDetails";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   const theme = createTheme({
     palette: {
       primary: {
@@ -18,9 +16,11 @@ function App() {
   });
   return (
     <ThemeProvider theme={theme}>
-      <div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <UserDetailsForm />
-      </div>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <UserDetailsForm />
+        </div>
+      </LocalizationProvider>
     </ThemeProvider>
   );
 }

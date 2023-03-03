@@ -1,8 +1,9 @@
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { Button, CircularProgress, Grid, TextField } from "@mui/material";
+import { Alert, Button, CircularProgress, Grid, TextField } from "@mui/material";
 import { useStyles } from "./styles";
 import { MuiTelInput } from "mui-tel-input";
+import { DatePicker } from "@mui/x-date-pickers";
 
 interface FormValues {
   customerName: string;
@@ -36,16 +37,24 @@ export default function UserDetailsForm() {
 
   const handleSubmit = async (values: FormValues, actions: any) => {
     actions.setSubmitting(true);
+    try {
+      const response = await fetch("api/userFormDetails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
 
-    // try {
-    //   const response = await postUserDetails(values);
-    //   console.log(response);
-    //   actions.resetForm();
-    //   actions.setStatus({ success: true });
-    // } catch (error) {
-    //   console.error(error);
-    //   actions.setStatus({ success: false });
-    // }
+      if (!response.ok) {
+        throw new Error("Failed to submit form");
+      }
+      actions.resetForm();
+      actions.setStatus({ success: true });
+    } catch (error) {
+      console.error(error);
+      actions.setStatus({ success: false });
+    }
 
     actions.setSubmitting(false);
   };
@@ -66,18 +75,25 @@ export default function UserDetailsForm() {
             helperText={touched.customerName && errors.customerName}
           />
 
-          <TextField
-            name="dob"
-            label="Date of Birth"
-            variant="outlined"
-            type="date"
-            className={classes.input}
-            InputLabelProps={{ shrink: true }}
+          <DatePicker
+            label="Basic example"
             value={values.dob}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={touched.dob && Boolean(errors.dob)}
-            helperText={touched.dob && errors.dob}
+            onChange={(value) => setFieldValue("dob", value)}
+            maxDate={new Date()}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="dob"
+                label="Date of Birth"
+                variant="outlined"
+                type="date"
+                className={classes.input}
+                InputLabelProps={{ shrink: true }}
+                onBlur={handleBlur}
+                error={touched.dob && Boolean(errors.dob)}
+                helperText={touched.dob && errors.dob}
+              />
+            )}
           />
 
           <TextField
@@ -128,9 +144,9 @@ export default function UserDetailsForm() {
 
           {isSubmitting && <CircularProgress size={24} className={classes.loader} />}
 
-          {status?.success && <div className={classes.successMsg}>Form submitted successfully!</div>}
+          {status?.success && <Alert severity="success">Form submitted successfully!</Alert>}
 
-          {status?.success === false && <div className={classes.errorMsg}>Form submission failed.</div>}
+          {status?.success === false && <Alert severity="error">Form submission failed.</Alert>}
         </Form>
       )}
     </Formik>
