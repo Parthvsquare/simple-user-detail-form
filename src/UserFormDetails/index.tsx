@@ -2,8 +2,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { Button, CircularProgress, Grid, TextField } from "@mui/material";
 import { useStyles } from "./styles";
-import { matchIsValidTel, MuiTelInput } from "mui-tel-input";
-import { useState } from "react";
+import { MuiTelInput } from "mui-tel-input";
 
 interface FormValues {
   customerName: string;
@@ -110,22 +109,14 @@ export default function UserDetailsForm() {
           <Grid container className={classes.gridContainer} spacing={2}>
             <Grid item xs={12} sm={6}>
               <div className={classes.gridItem}>
-                <MuiTelInput preferredCountries={["IN"]} label="Phone" name="phone" forceCallingCode fullWidth value={values.phone} onChange={(value) => setFieldValue("phone", value)} />
+                <MuiTelInput defaultCountry="IN" label="Phone" name="phone" forceCallingCode fullWidth value={values.phone} onChange={(value) => setFieldValue("phone", value)} />
                 {touched.phone && errors.phone && <div className={classes.errorMsg}>{errors.phone}</div>}
               </div>
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <div className={classes.gridItem}>
-                <MuiTelInput
-                  preferredCountries={["IN"]}
-                  label="Alternate Phone"
-                  name="altPhone"
-                  forceCallingCode
-                  fullWidth
-                  value={values.altPhone}
-                  onChange={(value) => setFieldValue("altPhone", value)}
-                />
+                <MuiTelInput defaultCountry="IN" label="Alternate Phone" name="altPhone" forceCallingCode fullWidth value={values.altPhone} onChange={(value) => setFieldValue("altPhone", value)} />
                 {touched.altPhone && errors.altPhone && <div className={classes.errorMsg}>{errors.altPhone}</div>}
               </div>
             </Grid>
