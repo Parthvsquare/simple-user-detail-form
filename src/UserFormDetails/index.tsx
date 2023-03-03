@@ -76,7 +76,7 @@ export default function UserDetailsForm() {
           />
 
           <DatePicker
-            label="Basic example"
+            label="Date of Birth"
             value={values.dob}
             onChange={(value) => setFieldValue("dob", value)}
             maxDate={new Date()}
@@ -84,7 +84,6 @@ export default function UserDetailsForm() {
               <TextField
                 {...params}
                 name="dob"
-                label="Date of Birth"
                 variant="outlined"
                 type="date"
                 className={classes.input}

@@ -1,7 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import "./server";
+//@ts-expect-error
+import { makeServer } from "./server";
+
+if (process.env.NODE_ENV === "development") {
+  makeServer();
+}
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
